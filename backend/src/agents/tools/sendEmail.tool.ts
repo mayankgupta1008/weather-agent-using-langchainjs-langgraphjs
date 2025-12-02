@@ -37,7 +37,7 @@ export const sendEmailTool = tool(
     name: "sendEmail",
     description: "Sends an email to a specified recipient.",
     schema: z.object({
-      email: z.string().email(),
+      email: z.email(),
       subject: z.string(),
       body: z.string(),
     }),

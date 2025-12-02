@@ -15,7 +15,7 @@ export const sendWeatherEmail = async (req: Request, res: Response) => {
       city: result.city,
     });
   } catch (error) {
-    console.log("Error inside sendWeatherEmail controller:", error);
+    console.log("Error inside sendWeatherEmail:", error);
     return res.status(500).json({ error: "Failed to send weather email" });
   }
 };
