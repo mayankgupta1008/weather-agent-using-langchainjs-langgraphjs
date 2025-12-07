@@ -110,74 +110,41 @@ BullMQ Queue (Redis) → Worker → Agent → Email Sent
 ## 📁 Project Structure
 
 ```
-weather-agent/
-├── apps/
-│   ├── web/                       # Web application
+.
+├── apps/                               # 🚀 DEPLOYABLE APPLICATIONS
+│   ├── web/                            # (React/Vite)
+│   │   ├── Dockerfile                  # Builds Nginx + React static files
+│   │   ├── package.json                # "dependencies": {"@my-project/common": "*"}
+│   │   └── src/
+│   │       └── api-client.ts           # Imports types from @my-project/common
+│   ├── backend/                        # (Node.js/Express)
+│   │   ├── Dockerfile                  # Builds Node runtime
+│   │   ├── package.json                # "dependencies": {"@my-project/common": "*"}
+│   │   └── src/
+│   │       ├── server.ts               # Uses types from @my-project/common
+│   └── mobile/                         # (React Native - FUTURE)
+│       ├── package.json                # "dependencies": {"@my-project/common": "*"}
+│       └── App.tsx                     # Uses same types as Web!
+│
+├── packages/                           # 📦 SHARED LIBRARIES
+│   ├── common/                         # PURE TS/JS (No React, No Node specifics)
 │   │   ├── src/
-│   │   ├── public/
-│   │   ├── Dockerfile
-│   │   └── package.json
-│   │
-│   ├── mobile/                    # Mobile application
-│   │   ├── src/
-│   │   ├── android/
-│   │   ├── ios/
-│   │   └── package.json
-│   │
-│   └── api/                       # Express backend
-│       ├── src/
-│       │   ├── controllers/
-│       │   ├── services/
-│       │   ├── routes/
-│       │   └── index.ts
-│       ├── Dockerfile
-│       └── package.json
+│   │       ├── types.ts                # e.g., export interface User { id: string }
+│   │       └── validations.ts          # e.g., Zod schemas for login form
+│   └── ui/                             # SHARED REACT COMPONENTS
+│       └── src/
+│           └── Button.tsx              # Your "Brand" Button used by Web & Mobile
 │
-├── packages/                      # Shared libraries
-│   ├── types/                     # Shared TypeScript types
-│   │   ├── src/
-│   │   └── package.json
-│   │
-│   ├── ui/                        # Shared UI components
-│   │   ├── src/
-│   │   └── package.json
-│   │
-│   └── utils/                     # Shared utilities
-│       ├── src/
-│       └── package.json
+├── infra/                              # 🏗️ TERRAFORM (Cloud Resources)
+│   ├── main.tf                         # Defines EKS Cluster, RDS Database, S3 Buckets
+│   ├── providers.tf                    # AWS/GCP credentials
+│   └── variables.tf
 │
-├── infrastructure/
-│   ├── terraform/
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   ├── terraform.tfvars
-│   │   └── outputs.tf
-│   │
-│   └── k8s/                       # Kubernetes manifests
-│       ├── namespace.yaml
-│       ├── configmap.yaml
-│       ├── secrets.yaml
-│       ├── web-deployment.yaml
-│       ├── api-deployment.yaml
-│       ├── web-service.yaml
-│       ├── api-service.yaml
-│       └── ingress.yaml
-│
-├── .github/
-│   └── workflows/
-│       └── deploy.yml             # Single CI/CD pipeline
-│
-├── scripts/
-│   ├── build.sh
-│   └── deploy.sh
-│
-├── docker-compose.yml             # For local development
-├── package.json                   # Root package.json
-├── pnpm-workspace.yaml           # Workspace config
-├── turbo.json                    # Turborepo config
-├── .gitignore
-├── .env.example
-└── README.md
+├── k8s/                                # ☸️ KUBERNETES (Deployment Config)
+│   ├── web-deployment.yaml             # Tells K8s to run the 'web' container
+│   ├── server-deployment.yaml          # Tells K8s to run the 'backend' container
+│   ├── ingress.yaml                    # Routing Rules (example.com -> web)
+│   └── secrets.yaml                    # DB Passwords
 ```
 
 ## 📧 Email Output
