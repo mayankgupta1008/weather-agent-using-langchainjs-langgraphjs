@@ -110,18 +110,74 @@ BullMQ Queue (Redis) → Worker → Agent → Email Sent
 ## 📁 Project Structure
 
 ```
-backend/src/
-├── agents/
-│   ├── tools/              # fetchWeather, formatEmail, sendEmail
-│   └── weatherEmail.agent.ts
-├── queues/                 # BullMQ queue definition
-├── workers/                # Background job processor
-├── schedulers/             # Scheduler management
-├── controllers/            # weatherEmail, weatherEmailScheduler
-├── routes/                 # API routes
-├── validations/            # Zod schemas
-├── config/                 # Redis config
-└── index.ts
+weather-agent/
+├── apps/
+│   ├── web/                       # Web application
+│   │   ├── src/
+│   │   ├── public/
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
+│   ├── mobile/                    # Mobile application
+│   │   ├── src/
+│   │   ├── android/
+│   │   ├── ios/
+│   │   └── package.json
+│   │
+│   └── api/                       # Express backend
+│       ├── src/
+│       │   ├── controllers/
+│       │   ├── services/
+│       │   ├── routes/
+│       │   └── index.ts
+│       ├── Dockerfile
+│       └── package.json
+│
+├── packages/                      # Shared libraries
+│   ├── types/                     # Shared TypeScript types
+│   │   ├── src/
+│   │   └── package.json
+│   │
+│   ├── ui/                        # Shared UI components
+│   │   ├── src/
+│   │   └── package.json
+│   │
+│   └── utils/                     # Shared utilities
+│       ├── src/
+│       └── package.json
+│
+├── infrastructure/
+│   ├── terraform/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── terraform.tfvars
+│   │   └── outputs.tf
+│   │
+│   └── k8s/                       # Kubernetes manifests
+│       ├── namespace.yaml
+│       ├── configmap.yaml
+│       ├── secrets.yaml
+│       ├── web-deployment.yaml
+│       ├── api-deployment.yaml
+│       ├── web-service.yaml
+│       ├── api-service.yaml
+│       └── ingress.yaml
+│
+├── .github/
+│   └── workflows/
+│       └── deploy.yml             # Single CI/CD pipeline
+│
+├── scripts/
+│   ├── build.sh
+│   └── deploy.sh
+│
+├── docker-compose.yml             # For local development
+├── package.json                   # Root package.json
+├── pnpm-workspace.yaml           # Workspace config
+├── turbo.json                    # Turborepo config
+├── .gitignore
+├── .env.example
+└── README.md
 ```
 
 ## 📧 Email Output
