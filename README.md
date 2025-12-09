@@ -110,41 +110,59 @@ BullMQ Queue (Redis) → Worker → Agent → Email Sent
 ## 📁 Project Structure
 
 ```
-.
-├── apps/                               # 🚀 DEPLOYABLE APPLICATIONS
-│   ├── web/                            # (React/Vite)
-│   │   ├── Dockerfile                  # Builds Nginx + React static files
-│   │   ├── package.json                # "dependencies": {"@my-project/common": "*"}
-│   │   └── src/
-│   │       └── api-client.ts           # Imports types from @my-project/common
-│   ├── backend/                        # (Node.js/Express)
-│   │   ├── Dockerfile                  # Builds Node runtime
-│   │   ├── package.json                # "dependencies": {"@my-project/common": "*"}
-│   │   └── src/
-│   │       ├── server.ts               # Uses types from @my-project/common
-│   └── mobile/                         # (React Native - FUTURE)
-│       ├── package.json                # "dependencies": {"@my-project/common": "*"}
-│       └── App.tsx                     # Uses same types as Web!
+weather-ai-app/
 │
-├── packages/                           # 📦 SHARED LIBRARIES
-│   ├── common/                         # PURE TS/JS (No React, No Node specifics)
+├── apps/                              # Your microservices
+│   ├── web/                           # React frontend
 │   │   ├── src/
-│   │       ├── types.ts                # e.g., export interface User { id: string }
-│   │       └── validations.ts          # e.g., Zod schemas for login form
-│   └── ui/                             # SHARED REACT COMPONENTS
-│       └── src/
-│           └── Button.tsx              # Your "Brand" Button used by Web & Mobile
+│   │   ├── Dockerfile
+│   │   ├── nginx.conf
+│   │   └── package.json
+│   │
+│   ├── backend/                       # Auth + API service
+│   │   ├── src/
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
+│   └── weather-agent/                 # LangGraph service
+│       ├── src/
+│       ├── Dockerfile
+│       └── package.json
 │
-├── infra/                              # 🏗️ TERRAFORM (Cloud Resources)
-│   ├── main.tf                         # Defines EKS Cluster, RDS Database, S3 Buckets
-│   ├── providers.tf                    # AWS/GCP credentials
-│   └── variables.tf
+├── packages/                          # Shared code
+│   ├── common/                        # Types & validations
+│   │   ├── src/
+│   │   │   ├── types.ts
+│   │   │   └── validations.ts
+│   │   └── package.json
+│   │
+│   └── database/                      # MongoDB models
+│       ├── src/
+│       │   └── models/
+│       └── package.json
 │
-├── k8s/                                # ☸️ KUBERNETES (Deployment Config)
-│   ├── web-deployment.yaml             # Tells K8s to run the 'web' container
-│   ├── server-deployment.yaml          # Tells K8s to run the 'backend' container
-│   ├── ingress.yaml                    # Routing Rules (example.com -> web)
-│   └── secrets.yaml                    # DB Passwords
+├── k8s/                               # Kubernetes configs
+│   ├── web.yaml                       # Web deployment + service
+│   ├── backend.yaml                   # Backend deployment + service
+│   ├── weather-agent.yaml             # Agent deployment + service
+│   ├── mongo.yaml                     # MongoDB StatefulSet
+│   ├── redis.yaml                     # Redis deployment
+│   └── ingress.yaml                   # Nginx Ingress routing
+│
+├── terraform/                         # Infrastructure (pick ONE cloud)
+│   ├── main.tf                        # EKS/GKE cluster
+│   ├── variables.tf
+│   └── outputs.tf
+│
+├── .github/
+│   └── workflows/
+│       └── deploy.yaml                # Single simple CI/CD
+│
+├── docker-compose.yml                 # Local development
+├── package.json                       # Root package.json
+├── pnpm-workspace.yaml                # Workspace definition
+├── turbo.json                         # Build config
+└── README.md
 ```
 
 ## 📧 Email Output
